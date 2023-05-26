@@ -8,14 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var isPresented = true
+    @State var date = Date()
+    
+    func formatDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        return dateFormatter.string(from: date)
+    }
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            VStack(spacing: 20.0) {
+                Text("Выбранная дата:")
+                Text(formatDate())
+                Button("Открыть календарь") {
+                    isPresented = true
+                }
+            }
+            .padding()
+            .sheet(isPresented: $isPresented) {
+                MyCalendar(isPresented: $isPresented, date: $date, currentDate: date)
+            }
         }
-        .padding()
     }
 }
 
